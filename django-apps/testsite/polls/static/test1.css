@@ -3,7 +3,8 @@ body {
     background-color: #202636;
     font: 13px 'Lucida sans', Arial, Helvetica;
     color: #eee;
-    text-align: center
+    text-align: center;
+    overflow : hidden;
 }
 
 a {
@@ -161,8 +162,5 @@ text-decoration:none;
     padding: 10px;
     background-color: #202636;
     height: max-content;
-}
-
-.clearfix {
-    clear : both;
+    overflow: auto;
 }

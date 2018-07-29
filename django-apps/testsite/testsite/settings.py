@@ -51,7 +51,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'testsite.urls'
-STATIC_URL = 'static/'
+STATIC_URL = BASE_DIR + '/static/'
 
 TEMPLATES = [
     {
