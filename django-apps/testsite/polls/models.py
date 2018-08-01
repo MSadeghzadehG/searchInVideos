@@ -1,5 +1,6 @@
 from django.db import models
-import webvtt,urllib.request
+from django.core import serializers
+import webvtt,urllib.request,os
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 # Create your models here.
@@ -11,9 +12,11 @@ class Video(models.Model):
     videoQuality = models.CharField(max_length=200, default='576')
     videoPath = models.TextField(max_length=10000, default='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4')
 
-
     def __str__(self):
         return self.name
+
+    def get_serializble(self):
+        return serializers.serialize("json", [self, ])
 
 
 # def file_get_contents(subtitle):
@@ -26,6 +29,9 @@ class Subtitle(models.Model):
 
     def __str__(self):
         return self.videoName.name + ' ' + self.subtitleLanguage
+
+    def get_serializble(self):
+        return serializers.serialize("json", [self, ])
 
     def get_file_name(self):
         return '/tmp/' + self.videoName.name + self.subtitleLanguage + '.'
@@ -61,4 +67,6 @@ class Subtitle(models.Model):
 
 # from .models import Subtitle
 for subtitle in Subtitle.objects.order_by('subtitleLanguage'):
-    subtitle.file_get_contents()
+    # print(os.path.isfile(subtitle.get_file_name()+'vtt'))
+    if not os.path.isfile(subtitle.get_file_name()+'vtt'):
+        subtitle.file_get_contents()

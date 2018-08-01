@@ -21,8 +21,9 @@ from polls import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('<str:word>/', views.index, name='index'),
-
+    path('', views.index1, name='index1'),
+    path('<str:word>/<int:time>', views.index, name='index'),
+    path('ajax/<str:word>/<int:time>', views.ajax, name='ajax'),
 ]
 
 
