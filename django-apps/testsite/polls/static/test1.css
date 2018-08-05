@@ -8,7 +8,7 @@ body {
 }
 
 a {
-    color: #ccc;
+    color: #0f0f0f;
 }
 
 /*-------------------------------------*/
@@ -89,7 +89,7 @@ a {
     padding: 0;
     cursor: pointer;
     height: 40px;
-    width: 110px;
+    /*width: 110px;*/
     font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
     color: #fff;
     text-transform: uppercase;
@@ -133,7 +133,7 @@ a {
 }
 .byline p{
 text-align:center;
-color:#c6c6c6;
+color:#0f0f0f;
 font: bold 18px Arial, Helvetica, Sans-serif;
 text-shadow: 0 2px 3px rgba(0,0,0,0.1);
 }
@@ -145,17 +145,18 @@ text-decoration:none;
 
 .playlist {
     list-style-type: none;
-    margin-left: 0 px ;
+    margin-left: 0px ;
     width: 100%;
 }
 
 .playlist-item :hover {
-    background-color: #f26339;
+    background-color: #f26339 !important;
+    cursor: pointer;
     height: max-content;
 }
 
 .playlist-item { 
-    border-width: 1 px;
+    border-width: 1px;
     border-style: solid;
     /* border-color: #9c9fa5; */
     border-color: black;
@@ -164,3 +165,35 @@ text-decoration:none;
     height: max-content;
     overflow: auto;
 }
+
+video::cue(green) {
+    color: green;
+}
+
+.icons{
+    list-style:none;
+    position:relative;
+}
+
+.icons li{
+    background:url("img/p3.png") no-repeat;
+    float:left;
+    height:23px;
+    text-indent:-999px;
+    cursor:pointer;
+    /*margin-right:5px;*/
+}
+
+/* Styling each icon */
+
+li.t10{ width:25px;}
+li.t10.active,
+li.t10:hover{ background-position:left bottom;}
+
+li.t20{ width:25px; background-position:-29px 0;}
+li.t20.active,
+li.t20:hover{ background-position:-29px bottom;}
+
+li.t30{ width:25px; background-position:-58px 0;}
+li.t30.active,
+li.t30:hover{ background-position:-58px bottom;}

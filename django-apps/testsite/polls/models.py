@@ -3,6 +3,8 @@ from django.core import serializers
 import webvtt,urllib.request,os
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.conf import settings
+
 # Create your models here.
 
 
@@ -16,10 +18,14 @@ class Video(models.Model):
         return self.name
 
     def get_serializble(self):
-        return serializers.serialize("json", [self, ])
+        # return serializers.serialize("json", [self, ])
+        output = {}
+        output['name'] = self.name
+        output['videoFormat'] = self.videoFormat
+        output['videoQuality'] = self.videoQuality
+        output['videoPath'] = self.videoPath
+        return output
 
-
-# def file_get_contents(subtitle):
 
 class Subtitle(models.Model):
     videoName = models.ForeignKey(Video, on_delete=models.CASCADE)
@@ -27,46 +33,59 @@ class Subtitle(models.Model):
     subtitleFormat = models.CharField(max_length=100,default='vtt')
     subtitleLanguage = models.CharField(max_length=200, default='en')
 
+    # def __init__(self, videoName, subtitlePath, subtitleFormat, subtitleLanguage):
+    #     self.videoName = videoName
+    #     self.subtitlePath = subtitlePath
+    #     self.subtitleFormat = subtitleFormat
+    #     self.subtitleLanguage = subtitleLanguage
+
     def __str__(self):
         return self.videoName.name + ' ' + self.subtitleLanguage
 
     def get_serializble(self):
-        return serializers.serialize("json", [self, ])
+        # return serializers.serialize("json", [self, ])
+        output = {}
+        output['videoName'] = self.videoName.name
+        output['subtitlePath'] = self.subtitlePath
+        output['subtitleFormat'] = self.subtitleFormat
+        output['subtitleLanguage'] = self.subtitleLanguage
+        return output
 
     def get_file_name(self):
-        return '/tmp/' + self.videoName.name + self.subtitleLanguage + '.'
+        return 'subtitles/' + self.videoName.name + self.subtitleLanguage + '.'
 
     def file_get_contents(self):
         filename = self.get_file_name()
-        f = open(filename + self.subtitleFormat, 'wb')
-
+        f = open(settings.MEDIA_ROOT + filename + self.subtitleFormat, 'wb')
         val = URLValidator()
         try:
             val(self.subtitlePath)
             output = urllib.request.urlopen(self.subtitlePath).read()
+            print('url')
         except ValidationError:
-            # from django.contrib.staticfiles.storage import staticfiles_storage
-            # with open(staticfiles_storage.url(filename)) as f:
-            #     return f.read()
+            # with open(filename+'vtt') as f:
+            #     output = f.read()
+            # print('file')
             pass
 
         f.write(output)
         f.close()
 
         if self.subtitleFormat == 'sbv':
-            webvtt.from_sbv(filename + self.subtitleFormat
-                            ).save(
+            webvtt.from_sbv(
+                filename + self.subtitleFormat).save(
                 filename + 'vtt')
             print('sbv subtitle converted to vtt')
         elif self.subtitleFormat == 'srt':
             webvtt.from_srt(
                 filename + self.subtitleFormat).save(
-                filename + '.tt')
+                filename + '.vtt')
             print('srt subtitle converted to vtt')
 
 
-# from .models import Subtitle
+from .models import Subtitle
 for subtitle in Subtitle.objects.order_by('subtitleLanguage'):
     # print(os.path.isfile(subtitle.get_file_name()+'vtt'))
-    if not os.path.isfile(subtitle.get_file_name()+'vtt'):
+    if not os.path.isfile(settings.MEDIA_ROOT + subtitle.get_file_name()+'vtt'):
         subtitle.file_get_contents()
+

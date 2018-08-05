@@ -21,39 +21,24 @@
                 <div class="col-sm-8">
                     <div align="center" class="embed-responsive embed-responsive-16by9">
                         <div class="video-container">
-                            <video class="videoPlayer" controls crossorigin autoplay preload="none" poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
-                                <!-- Video files -->
-{#                                <source class="selectedVideo" src="{{ selectedVideo.video.videoPath }}#t={{ selectedVideo.startTime }},{{ selectedVideo.endTime }}" type="{{ selectedVideo.video.videoFormat }}" size="{{ selectedVideo.video.videoQuality }}">#}
-                                <!-- Source example -->
+                            <video class="videoPlayer" controls crossorigin  preload="none" poster="https://envideo.ir/wp-content/uploads/2017/12/envideo-logo-300x83.png" id="player">
                                 <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">
-                                <!-- Caption files -->
-{#                                {% for subtitle in subtitles %}#}
-{#                                    {% if subtitle.videoName.name == selectedVideo.video.name %}#}
-{#                                        <track kind="captions" label="{{ subtitle.subtitleLanguage }}" srclang="{{ subtitle.subtitleLanguage }}" src="{{ subtitle.subtitlePath }}">#}
-                                        <!-- Subtitle example -->
-                                        <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-                                <!-- Fallback for browsers that don't support the <video> element -->
-{#                                <a href="{{ selectedVideo.video.videoPath }}" download>Download</a>#}
+{#                                <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">#}
                             </video>
                         </div>
                     </div>
                 </div>
             <div class="col-sm-4">
-                    <form class="form-wrapper cf">
-                        <input type="text" placeholder="Search here..." required>
-                        <button type="submit">Search</button>
-                    </form>
-                    <div class="playlist">
-{#                        {% for video in playlist %}#}
-{#                            <div id="item-{{ video.id }}" class="playlist-item">#}
-{#                                <h4 class="text-left">• {{ video.video.name }}</h4>#}
-{#                                <h6 class="text-right">{{ video.startTime }}</h6>#}
-{#                                <h6 class="text-right">{{ video.endTime }}</h6>#}
-{#                            </div>#}
-{#                        {% endfor %}#}
+                    <div class="form-wrapper cf">
+                        <input id="searchbar-input" class="col-sm-8" type="text" placeholder="Search here..." required>
+                        <button id="searchbar-button" type="button" class="col-sm-4">Search</button>
+                        <ul class="icons col-sm-12">
+                            <li class="t10 active" id="10"></li>
+                            <li class="t20" id="20"></li>
+                            <li class="t30" id="30"></li>
+                        </ul>
                     </div>
+                    <div id="list-container"></div>
             </div>
         </div>
 

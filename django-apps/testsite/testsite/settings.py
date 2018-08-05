@@ -25,7 +25,7 @@ SECRET_KEY = 'x@(np&&rls$6q9#!9))x2o0=3(bd4x$khfgdb)lt-#nnyyv87w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -51,7 +51,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'testsite.urls'
-STATIC_URL = BASE_DIR + '/static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR + '/media/'
+STATIC_ROOT = BASE_DIR + '/static/'
 
 TEMPLATES = [
     {
@@ -108,9 +111,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+#     # '/var/www/static/',
+# ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR +  'tmp/django_cache',
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 LANGUAGE_CODE = 'en-us'
 

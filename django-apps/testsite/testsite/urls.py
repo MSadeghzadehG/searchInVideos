@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 from polls import views
 
@@ -24,6 +25,6 @@ urlpatterns = [
     path('', views.index1, name='index1'),
     path('<str:word>/<int:time>', views.index, name='index'),
     path('ajax/<str:word>/<int:time>', views.ajax, name='ajax'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
