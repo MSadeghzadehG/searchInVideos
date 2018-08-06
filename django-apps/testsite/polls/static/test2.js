@@ -1,6 +1,17 @@
-        document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+
+
+    let server_url = 'http://localhost:8000/'
 
     const player = new Plyr('#player');
+
+
+    function stripEndQuotes(s){
+            var t=s.length;
+            if (s.charAt(0)=='"') s=s.substring(1,t--);
+            if (s.charAt(--t)=='"') s=s.substring(0,t);
+            return s;
+        }
 
     document.getElementById('searchbar-button').onclick = function () {
       $("#list-container").empty();
@@ -8,7 +19,7 @@
       let time = document.getElementsByClassName('active')[0].id;
       console.log(time);
       $.ajax({
-          url: 'http://localhost:8000/ajax/'+searchedWord+'/'+time,
+          url: server_url + 'ajax/'+searchedWord+'/'+time,
           success: function (data) {
               // console.log('clicked');
               // console.log(Object.keys(data).length)
@@ -24,25 +35,35 @@
     };
 
     function setPlayerSource(data) {
-        player.source = {
-            type: 'video',
-            sources: [
-                {
-                    src: data.video.videoPath + "#t=" + data.startTime + ',' + data.endTime,
-                    type: data.video.videoFormat,
-                    size: data.video.videoQuality,
-                },
-            ],
-            poster: 'https://envideo.ir/wp-content/uploads/2017/12/envideo-logo-300x83.png',
-            tracks: [
-                {
-                    kind: 'captions',
-                    label: capitalizeFirstLetter(data.subtitle.subtitleLanguage),
-                    srclang: data.subtitle.subtitleLanguage,
-                    src: data.subtitle.subtitlePath,
-                },
-            ],
-        };
+        console.log(data)
+        $.ajax({
+            url: server_url+ 'video_ajax/',
+            type: 'POST',
+            contentType:'application/json',
+            data : JSON.stringify(data) + "[]" +JSON.stringify(data.subtitle) + "[]" + JSON.stringify(data.video),
+            success: function () {
+                player.source = {
+                    type: 'video',
+                    sources: [
+                        {
+                            // src: data.video.videoPath + "#t=" + data.startTime + ',' + data.endTime,
+                            src: data.video.videoPath,
+                            type: data.video.videoFormat,
+                            size: data.video.videoQuality,
+                        },
+                    ],
+                    poster: 'https://envideo.ir/wp-content/uploads/2017/12/envideo-logo-300x83.png',
+                    tracks: [
+                        {
+                            kind: 'captions',
+                            label: capitalizeFirstLetter(data.subtitle.subtitleLanguage),
+                            srclang: data.subtitle.subtitleLanguage,
+                            src: data.subtitle.subtitlePath,
+                        },
+                    ],
+                };
+            }
+        });
 
         function capitalizeFirstLetter(string) {
            return string.charAt(0).toUpperCase() + string.slice(1);
@@ -71,13 +92,6 @@
             document.getElementById("item-" + data[i].id).appendChild(time);
             document.getElementById("item-" + data[i].id).onclick = function () { setPlayerSource(data[i]) };
             // document.getElementById('item-' + data[i].id)..
-        }
-
-        function stripEndQuotes(s){
-            var t=s.length;
-            if (s.charAt(0)=='"') s=s.substring(1,t--);
-            if (s.charAt(--t)=='"') s=s.substring(0,t);
-            return s;
         }
     }
 
