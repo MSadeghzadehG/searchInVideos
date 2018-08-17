@@ -54,13 +54,14 @@ class Subtitle(models.Model):
     def get_file_name(self):
         return 'subtitles/' + self.videoName.name + '-' + self.subtitleLanguage + '.'
 
-    def file_get_contents(self):
+    def get_file_contents(self):
         filename = self.get_file_name()
         f = open(settings.MEDIA_ROOT + filename + self.subtitleFormat, 'wb')
         val = URLValidator()
         try:
             val(self.subtitlePath)
             output = urllib.request.urlopen(self.subtitlePath).read()
+            print(output)
             print('url')
         except ValidationError:
             # with open(filename+'vtt') as f:

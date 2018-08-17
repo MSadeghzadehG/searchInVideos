@@ -97,16 +97,16 @@ def video_ajax(request):
         if playlist_item.word in caption.text.lower():
             edited_sub = webvtt.WebVTT()
             for orginal_caption in captions:
-                if get_sec(orginal_caption.start.split('.')[0]) >= get_sec(caption.start.split('.')[0]) - playlist_item.time and get_sec(
-                        orginal_caption.end.split('.')[0]) <= get_sec(caption.end.split('.')[0]) + playlist_item.time:
+                if get_sec(orginal_caption.start.split('.')[0]) >= get_sec(playlist_item.startTime) and get_sec(
+                        orginal_caption.end.split('.')[0]) <= get_sec(playlist_item.endTime):
                     edited_caption = orginal_caption.text.replace(playlist_item.word, '<u>' + playlist_item.word + '</u>')
                     edited_caption = edited_caption.replace(playlist_item.word.capitalize(), '<u>' + playlist_item.word.capitalize() + '</u>')
                     edited_sub.captions.append(webvtt.Caption(
                         humanize_time(
-                            get_sec(orginal_caption.start.split('.')[0]) - get_sec(caption.start.split('.')[0]) + playlist_item.time) + '.' +
+                            get_sec(orginal_caption.start.split('.')[0]) - get_sec(playlist_item.startTime)) + '.' +
                         orginal_caption.start.split('.')[1],
                         humanize_time(
-                            get_sec(orginal_caption.end.split('.')[0]) - get_sec(caption.start.split('.')[0]) + playlist_item.time) + '.' +
+                            get_sec(orginal_caption.end.split('.')[0]) - get_sec(playlist_item.startTime)) + '.' +
                         orginal_caption.end.split('.')[1],
                         [edited_caption]
                     ))
@@ -122,8 +122,10 @@ def video_ajax(request):
         if video1.name == subtitle.videoName.name:
             sub_video = video1
 
-    ffmpeg_extract_subclip(sub_video.videoPath, float(get_sec(playlist_item.startTime)),
-                           float(get_sec(playlist_item.endTime)),
+    print (int(get_sec(playlist_item.startTime)))
+
+    ffmpeg_extract_subclip(sub_video.videoPath, int(get_sec(playlist_item.startTime)),
+                           int(get_sec(playlist_item.endTime)),
                            targetname=settings.BASE_DIR +
                                       result_dir + playlist_item.word +
                                       '-' + str(playlist_item.id) + '-' +
@@ -163,9 +165,11 @@ def search(word, subtitles, time, session):
     if not os.path.exists(settings.BASE_DIR + result_dir):
         os.makedirs(settings.BASE_DIR + result_dir)
 
-    for subtitle in Subtitle.objects.order_by('subtitleLanguage'):
+    print(len(list(Subtitle.objects.order_by('subtitleLanguage'))))
+    for subtitle in list(Subtitle.objects.order_by('subtitleLanguage')):
         if not os.path.isfile(settings.MEDIA_ROOT + subtitle.get_file_name() + 'vtt'):
-            subtitle.file_get_contents()
+            subtitle.get_file_contents()
+            print('omad')
 
     results_num = 0
 
@@ -204,7 +208,7 @@ def search(word, subtitles, time, session):
                 v.videoFormat = sub_video.videoFormat
                 v.videoQuality = sub_video.videoQuality
                 v.videoPath = settings.SERVER_URL + result_dir + word + '-' + str(results_num) + '-' + subtitle.get_file_name().split('/')[1] + sub_video.videoFormat.split('/')[1]
-                v.name = sub_video.name
+                v.name = caption.text
 
                 playlist_video = PlaylistVideo(v, s, str(results_num), word, time)
                 playlist_video.startTime = startTime

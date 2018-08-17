@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
 
-    let server_url = 'http://localhost:8000/'
+    // let server_url = 'http://91.98.76.233/';
+    let server_url = 'http://localhost:8000/';
 
     const player = new Plyr('#player');
 
@@ -16,13 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchbar-button').onclick = function () {
       $("#list-container").empty();
       let searchedWord = document.getElementById('searchbar-input').value;
-      let time = document.getElementsByClassName('active')[0].id;
+      let time = (parseInt(document.getElementsByClassName('active')[0].id)/10).toString();
       console.log(time);
       $.ajax({
           url: server_url + 'ajax/'+searchedWord+'/'+time,
           success: function (data) {
               // console.log('clicked');
-              // console.log(Object.keys(data).length)
+              console.log(Object.keys(data).length)
               createPlayList(data);
               if (Object.keys(data).length > 0) {
                   for (let i in data) {
@@ -55,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     poster: 'https://envideo.ir/wp-content/uploads/2017/12/envideo-logo-300x83.png',
                     tracks: [
                         {
+                            default: true,
                             kind: 'captions',
                             label: capitalizeFirstLetter(data.subtitle.subtitleLanguage),
                             srclang: data.subtitle.subtitleLanguage,

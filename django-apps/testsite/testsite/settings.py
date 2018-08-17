@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# SERVER_URL = 'http://91.98.76.233'
 SERVER_URL = 'http://localhost:8000'
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +27,7 @@ SECRET_KEY = 'x@(np&&rls$6q9#!9))x2o0=3(bd4x$khfgdb)lt-#nnyyv87w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '91.98.76.233']
 
 
 # Application definition
@@ -124,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': BASE_DIR +  'tmp/django_cache',
+        'LOCATION': '/tmp',
     }
 }
 

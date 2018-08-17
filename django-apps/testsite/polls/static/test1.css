@@ -2,7 +2,7 @@ body {
     /* background: # url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB9JREFUeNpi/P//PwM6YGLAAuCCmpqacC2MRGsHCDAA+fIHfeQbO8kAAAAASUVORK5CYII=); */
     background-color: #202636;
     font: 13px 'Lucida sans', Arial, Helvetica;
-    color: #eee;
+    /*color: #000000;*/
     text-align: center;
     /*overflow : hidden;*/
 }
@@ -44,6 +44,7 @@ a {
 
 .form-wrapper input {
     /* width: 340px; */
+    color: #0f0f0f;
     height: 40px;
     padding: 10px 5px;
     float: left;    
@@ -145,6 +146,7 @@ text-decoration:none;
 
 .playlist {
     list-style-type: none;
+    color: #ffffff;
     margin-left: 0px ;
     width: 100%;
 }
@@ -157,6 +159,7 @@ text-decoration:none;
 
 .playlist-item { 
     border-width: 1px;
+    color: #ffffff;
     border-style: solid;
     /* border-color: #9c9fa5; */
     border-color: black;
